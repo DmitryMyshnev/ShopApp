@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+  <title>New product</title>
+</head>
+<body>
+<header th:insert="header :: header"></header>
+
+<div class="alert alert-danger" role="alert" th:if="${IsExist_name}">
+  An product already exists for this name!
+</div>
+<div class="container h-50 d-flex justify-content-center">
+  <div class="my-auto w-50">
+    <div>
+      <h1>New Product </h1>
+    </div>
+    <form th:action="@{/products/save_new_product}" th:object="${product}" method="post">
+
+      <div class="row mb-3">
+        <label for="name" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" th:field="*{name}" class="form-control" id="name">
+          <div class="alert alert-warning" th:if="${NotEmpty_name}">
+              Name can not be empty!
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="price" class="col-sm-2 col-form-label">Price</label>
+        <div class="col-sm-10">
+          <input type="text" th:field="*{price}" class="form-control" id="price">
+          <div class="alert alert-warning" th:if="${NotNull_price}">
+            Price can not by empty!
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="manufacturer" class="col-sm-2 col-form-label">Manufacturer</label>
+        <div class="form-group col-sm-10">
+          <div class="alert alert-warning" th:if="${NotNull_manufacturerId}">
+            Please, choose a manufacturer!
+          </div>
+          <select id="manufacturer" th:field="*{manufacturer.id}" class="form-control ">
+            <option value="" hidden>Select a manufacturer</option>
+            <option th:each="mnf : ${allManufacturer}"
+                    th:value="${mnf.id}"
+                    th:text="${mnf.name}">
+            </option>
+          </select>
+        </div>
+      </div>
+      <a type="button" class="btn btn-primary mt-3" href="/products">Back</a>
+      <button type="submit" class="btn btn-primary mt-3">Save</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

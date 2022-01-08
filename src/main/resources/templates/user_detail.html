@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <title>Title</title>
+</head>
+<body>
+<header th:insert="header :: header"></header>
+<div class="col-3 mt-5 ms-5">
+    <h2>User Detail</h2>
+    <table class="table table-bordered">
+        <thead></thead>
+        <tbody>
+        <tr>
+            <th scope="col">First Name</th>
+            <td th:text="${user_detail.firstName}"></td>
+        </tr>
+        <tr>
+            <th scope="col">Last Name</th>
+            <td th:text="${user_detail.lastName}"></td>
+        </tr>
+        <tr>
+            <th scope="col">Email</th>
+            <td th:text="${user_detail.email}"></td>
+        </tr>
+        <tr>
+            <th scope="col">Role</th>
+            <td th:text="${user_detail.role.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row mt-3">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group me-2" role="group" aria-label="Second group">
+                <a th:href="'/users/edit/'+ ${user_detail.id}" type="button" class="btn btn-primary">Edit</a>
+            </div>
+            <div class="btn-group me-2" role="group" aria-label="Second group">
+                <a th:href="'/users/edit/edit_password/'+ ${user_detail.id}" type="button" class="btn btn-primary">Edit Password</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
