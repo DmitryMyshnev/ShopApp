@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.goIt.shop.model.Manufacturer;
@@ -21,16 +22,20 @@ import java.util.Objects;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ManufacturerService manufacturerService;
 
-    private final List<Manufacturer> listManufacturer;
+    private  List<Manufacturer> listManufacturer;
     @Autowired
     public ProductController(ManufacturerService manufacturerService) {
+        this.manufacturerService = manufacturerService;
         listManufacturer = manufacturerService.getAllManufacturer();
     }
 
     @GetMapping
     public String allProduct(Model model) {
         List<Product> allProduct = productService.getAllProduct();
+        listManufacturer = manufacturerService.getAllManufacturer();
         model.addAttribute("listProduct", allProduct);
         return "all_product";
     }
@@ -46,6 +51,9 @@ public class ProductController {
     @PostMapping("/save_new_product")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String saveNewProduct(@ModelAttribute("product") @Valid Product product, BindingResult result, Model model) {
+         if(product.getManufacturer().getId() == null){
+             result.addError(new FieldError("manufacturer", "manufacturerId", product, false, new String[]{"NotNull"}, null, null));
+         }
         if (result.hasErrors()) {
             model.addAttribute("allManufacturer", listManufacturer);
             result.getFieldErrors().forEach(err -> model.addAttribute(Objects.requireNonNull(err.getCode()) + "_" + err.getField(), true));

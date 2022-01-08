@@ -73,6 +73,7 @@ public class HomeController {
         }
         if(userService.isExist(user)) {
             model.addAttribute("IsExist_email", true);
+            model.addAttribute("allRole", roles);
             return "registry";
         }
         userService.saveUser(user);
