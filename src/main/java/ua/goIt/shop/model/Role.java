@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition ="serial")
     private Long id;
     private String name;
 }

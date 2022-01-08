@@ -69,12 +69,12 @@ public class HomeController {
         if (result.hasErrors()) {
             model.addAttribute("allRole", roles);
             result.getFieldErrors().forEach(err -> model.addAttribute(Objects.requireNonNull(err.getCode()) + "_" + err.getField(), true));
-            if(result.hasGlobalErrors()) {
-                model.addAttribute("IsExist_email", true);
-            }
             return "registry";
         }
-
+        if(userService.isExist(user)) {
+            model.addAttribute("IsExist_email", true);
+            return "registry";
+        }
         userService.saveUser(user);
         model.addAttribute("successful",true);
         return "login";

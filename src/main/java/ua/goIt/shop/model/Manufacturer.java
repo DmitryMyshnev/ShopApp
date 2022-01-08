@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@Table(name = "manufacturer")
 //@IsExist
 public class Manufacturer {
     @Id

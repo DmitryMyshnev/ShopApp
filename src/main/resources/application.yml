@@ -7,8 +7,6 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-    generate-ddl: true
-  hibernate:
-    ddl-auto: create
-  freemarker:
-    expose-request-atributes: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
