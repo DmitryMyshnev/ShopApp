@@ -31,14 +31,9 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        return "redirect:/home";
+        return "redirect:/products";
     }
 
-    @GetMapping("/home")
-    public String home() {
-
-        return "home";
-    }
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
