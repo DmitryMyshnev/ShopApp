@@ -33,8 +33,8 @@
             <td th:text="${user.email}"></td>
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
-            <td >
-                <ul  th:each="role : ${user.roles}">
+            <td>
+                <ul th:each="role : ${user.roles}">
                     <li th:text="${role.name}"></li>
                 </ul>
             </td>
@@ -42,8 +42,11 @@
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group me-2" role="group" aria-label="Second group">
                         <a th:href="'/users/edit/' + ${user.id}" type="button" class="btn btn-warning">Edit</a>
-                        <a th:data-id="${user.id}" th:data-content="${user.firstName} + ' ' + ${user.lastName}" type="button" class="btn btn-danger remove_user" data-toggle="modal"
-                           data-target="#remove_modal">Remove</a>
+                        <div th:if="${user.email} != ${currentUser}">
+                            <a th:data-id="${user.id}" th:data-content="${user.firstName} + ' ' + ${user.lastName}"
+                               type="button" class="btn btn-danger remove_user" data-toggle="modal"
+                               data-target="#remove_modal">Remove</a>
+                        </div>
                     </div>
                 </div>
             </td>
@@ -60,7 +63,8 @@
 
 </div>
 
-<div class="modal fade" id="remove_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="remove_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -91,6 +95,7 @@
     $(".modal-footer #remove").attr('href',remove_href);
   });
 });
+
 </script>
 </body>
 </html>

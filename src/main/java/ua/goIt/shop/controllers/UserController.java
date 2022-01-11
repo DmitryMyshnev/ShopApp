@@ -35,9 +35,10 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String allUsers(Model model) {
+    public String allUsers(Model model,Authentication authentication) {
         List<User> allUsers = userService.getAllUsers();
         model.addAttribute("listUsers", allUsers);
+        model.addAttribute("currentUser", authentication.getName());
         return "all_users";
     }
 
