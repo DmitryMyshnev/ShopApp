@@ -93,7 +93,6 @@ public class UserController {
     }
 
     @PostMapping("/update_user")
-    //@PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model, Authentication authentication) {
         AtomicBoolean hasError = new AtomicBoolean(false);
         if (result.hasErrors()) {
