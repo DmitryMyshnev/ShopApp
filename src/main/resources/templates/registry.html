@@ -59,13 +59,12 @@
                     <div class="alert alert-warning" th:if="${NotNull_roleId}">
                         Please, choose a role!
                     </div>
-                    <select id="role" th:field="*{role.id}" class="form-control ">
-                        <option value="" hidden>Select a role</option>
-                        <option th:each="role : ${allRole}"
-                                th:value="${role.id}"
-                                th:text="${role.name}">
-                        </option>
-                    </select>
+                    <div th:each="role : ${allRole}" id="role">
+                        <div>
+                            <input type="checkbox" th:field="*{roles}" th:value="${role.id}">
+                            <label th:text="${role.name}"></label>
+                        </div>
+                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Save</button>

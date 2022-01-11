@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -16,7 +17,7 @@ public class Manufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition ="serial")
-    private Long id;
+    private UUID id;
     @NotEmpty
     private String name;
     @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)

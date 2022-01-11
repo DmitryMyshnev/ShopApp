@@ -15,6 +15,7 @@ import ua.goIt.shop.services.RoleService;
 import ua.goIt.shop.services.UserService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,14 +52,14 @@ public class HomeController {
 
     @GetMapping("/registry")
     public String registry(Model model) {
-        model.addAttribute("user", new User(new Role()));
+        model.addAttribute("user", new User(new ArrayList<>()));
         model.addAttribute("allRole", roles);
         return "registry";
     }
 
     @PostMapping("/process_register")
     public String processRegister(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
-        if(user.getRole().getId() == null){
+        if(user.getRoles().stream().allMatch(role -> role.getId() == null)){
             result.addError(new FieldError("role","roleId",user,false, new String[]{"NotNull"},null,null));
         }
         if (result.hasErrors()) {

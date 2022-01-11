@@ -33,7 +33,11 @@
             <td th:text="${user.email}"></td>
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
-            <td th:text="${user.role.name}"></td>
+            <td >
+                <ul  th:each="role : ${user.roles}">
+                    <li th:text="${role.name}"></li>
+                </ul>
+            </td>
             <td sec:authorize="hasAuthority('ADMIN')">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group me-2" role="group" aria-label="Second group">

@@ -6,6 +6,7 @@ import ua.goIt.shop.model.Role;
 import ua.goIt.shop.repositories.RoleRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RoleService {
@@ -16,7 +17,7 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Role getById(Long id) {
+    public Role getById(UUID id) {
         return roleRepository.getById(id);
     }
 }

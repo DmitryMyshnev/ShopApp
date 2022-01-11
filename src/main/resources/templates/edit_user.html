@@ -43,7 +43,7 @@
                     <input type="text" th:field="*{lastName}" class="form-control" id="last_name">
                 </div>
             </div>
-            <a type="button" class="btn btn-primary mt-3" href="/users">Back</a>
+            <a type="button" class="btn btn-primary mt-3" href="/users"   sec:authorize="hasAuthority('ADMIN')">Back </a>
             <button type="submit" class="btn btn-primary mt-3">Save</button>
         </form>
     </div>

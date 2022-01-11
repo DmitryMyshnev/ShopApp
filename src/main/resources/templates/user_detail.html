@@ -27,7 +27,11 @@
         </tr>
         <tr>
             <th scope="col">Role</th>
-            <td th:text="${user_detail.role.name}"></td>
+            <td>
+                <ul th:each="role : ${user_detail.roles}">
+                    <li th:text="${role.name}"></li>
+                </ul>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -37,7 +41,8 @@
                 <a th:href="'/users/edit/'+ ${user_detail.id}" type="button" class="btn btn-primary">Edit</a>
             </div>
             <div class="btn-group me-2" role="group" aria-label="Second group">
-                <a th:href="'/users/edit/edit_password/'+ ${user_detail.id}" type="button" class="btn btn-primary">Edit Password</a>
+                <a th:href="'/users/edit/edit_password/'+ ${user_detail.id}" type="button" class="btn btn-primary">Edit
+                    Password</a>
             </div>
         </div>
     </div>

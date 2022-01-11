@@ -9,17 +9,21 @@ import ua.goIt.shop.services.ManufacturerService;
 import ua.goIt.shop.services.ProductService;
 import ua.goIt.shop.services.UserService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Component
 public class ExistValidator implements ConstraintValidator<IsExist, Object> {
-   // @Autowired
+
     private UserService userService;
- //   @Autowired
+
     private ManufacturerService manufacturerService;
-  //  @Autowired
+
     private ProductService productService;
+
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {

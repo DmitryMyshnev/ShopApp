@@ -9,6 +9,7 @@ import ua.goIt.shop.model.User;
 import ua.goIt.shop.repositories.UserRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -26,8 +27,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserBiId(Long id) {
+    public User getUserBiId(UUID id) {
         return userRepository.getById(id);
+    }
+
+    public User getUserByEmail(String email){
+      return   userRepository.findUserByEmail(email);
     }
 
     public void saveUser(User user) {
@@ -49,7 +54,7 @@ public class UserService {
         userRepository.save(userWhoUpdate);
     }
 
-    public void deleteUserById(Long id) {
+    public void deleteUserById(UUID id) {
         userRepository.deleteById(id);
     }
 

@@ -11,6 +11,7 @@ import ua.goIt.shop.repositories.ProductRepository;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -21,7 +22,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(Long id){
+    public Product getProductById(UUID id){
         return productRepository.getById(id);
     }
 
@@ -29,7 +30,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void deleteProduct(Long id){
+    public void deleteProduct(UUID id){
         productRepository.deleteById(id);
     }
 

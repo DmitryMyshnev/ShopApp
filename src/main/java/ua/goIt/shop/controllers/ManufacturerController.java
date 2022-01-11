@@ -13,6 +13,7 @@ import ua.goIt.shop.services.ProductService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/manufacturers")
@@ -32,7 +33,7 @@ public class ManufacturerController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable(value = "id") Long id, Model model) {
+    public String editUser(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("manufacturer", manufacturerService.getManufacturerById(id));
         return "edit_manufacturer";
     }
@@ -78,7 +79,7 @@ public class ManufacturerController {
 
     @GetMapping("/remove/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String removeManufacturer(@PathVariable(value = "id") Long id) {
+    public String removeManufacturer(@PathVariable(value = "id") UUID id) {
         manufacturerService.deleteManufacturer(id);
         return "redirect:/manufacturers";
     }

@@ -9,6 +9,7 @@ import ua.goIt.shop.model.User;
 import ua.goIt.shop.repositories.ManufacturerRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ManufacturerService {
@@ -19,7 +20,7 @@ public class ManufacturerService {
        return manufacturerRepository.findAll();
     }
 
-    public Manufacturer getManufacturerById(Long id){
+    public Manufacturer getManufacturerById(UUID id){
         return manufacturerRepository.getById(id);
     }
 
@@ -27,7 +28,7 @@ public class ManufacturerService {
         manufacturerRepository.save(manufacturer);
     }
 
-    public void deleteManufacturer(Long id){
+    public void deleteManufacturer(UUID id){
         manufacturerRepository.deleteById(id);
     }
 

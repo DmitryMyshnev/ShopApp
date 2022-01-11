@@ -2,19 +2,25 @@ package ua.goIt.shop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import ua.goIt.shop.config.CustomUserDetails;
+import ua.goIt.shop.config.CustomUserDetailsService;
 import ua.goIt.shop.model.Role;
 import ua.goIt.shop.model.User;
 import ua.goIt.shop.services.RoleService;
 import ua.goIt.shop.services.UserService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Controller
@@ -31,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String allUsers(Model model) {
         List<User> allUsers = userService.getAllUsers();
         model.addAttribute("listUsers", allUsers);
@@ -38,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/user_detail/{id}")
-    public String userDetail(@PathVariable(value = "id") Long id, Model model) {
+    public String userDetail(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("user_detail", userService.getUserBiId(id));
         return "user_detail";
     }
@@ -46,7 +53,7 @@ public class UserController {
     @PostMapping("/save_new_user")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String saveNewUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
-        if (user.getRole().getId() == null) {
+        if (user.getRoles().stream().allMatch(role -> role.getId() == null)) {
             result.addError(new FieldError("role", "roleId", user, false, new String[]{"NotNull"}, null, null));
         }
         if (result.hasErrors()) {
@@ -66,28 +73,28 @@ public class UserController {
     @GetMapping("/new_user")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String newUser(Model model) {
-        model.addAttribute("user", new User(new Role()));
+        model.addAttribute("user", new User(new ArrayList<>()));
         model.addAttribute("allRole", roles);
         return "new_user";
     }
 
     @GetMapping("/remove/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String removeUser(@PathVariable(value = "id") Long id) {
+    public String removeUser(@PathVariable(value = "id") UUID id) {
         userService.deleteUserById(id);
         return "redirect:/users";
     }
 
     @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable(value = "id") Long id, Model model) {
+    public String editUser(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("user", userService.getUserBiId(id));
         model.addAttribute("allRole", roles);
         return "edit_user";
     }
 
     @PostMapping("/update_user")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
+    //@PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model, Authentication authentication) {
         AtomicBoolean hasError = new AtomicBoolean(false);
         if (result.hasErrors()) {
             result.getFieldErrors().stream()
@@ -100,22 +107,33 @@ public class UserController {
             if (hasError.get())
                 return "edit_user";
         }
-        String currentEmail = userService.getUserBiId(user.getId()).getEmail();
-        if (!user.getEmail().equals(currentEmail)) {
+        User currentUser = userService.getUserByEmail(authentication.getName());
+        String currentEmail = currentUser.getEmail();
+        UUID currentId = currentUser.getId();
+        if (!user.getId().equals(currentId)) {
             if (userService.isExist(user)) {
                 model.addAttribute("IsExist_email", true);
                 return "edit_user";
-            } else {
+            }
+        } else {
+            if (!user.getEmail().equals(currentEmail)) {
+                if (userService.isExist(user)) {
+                    model.addAttribute("IsExist_email", true);
+                    return "edit_user";
+                }
                 userService.updateUser(user);
                 return "redirect:/logout";
             }
         }
         userService.updateUser(user);
-        return "redirect:/users";
+        if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ADMIN")))
+            return "redirect:/users";
+        else
+            return "redirect:/products";
     }
 
     @GetMapping("/edit/edit_password/{id}")
-    public String updatePassword(@PathVariable(value = "id") Long id, Model model) {
+    public String updatePassword(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("user", userService.getUserBiId(id));
         return "edit_password";
     }

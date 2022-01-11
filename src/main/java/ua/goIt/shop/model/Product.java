@@ -6,6 +6,8 @@ import ua.goIt.shop.config.validation.IsExist;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -14,11 +16,11 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "serial")
-    private Long id;
+    private UUID id;
     @NotEmpty
     private String name;
     @NotNull
-    private Double price;
+    private BigDecimal price;
     @ManyToOne()
     private Manufacturer manufacturer;
 

@@ -16,6 +16,7 @@ import ua.goIt.shop.services.ProductService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/products")
@@ -23,7 +24,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private ManufacturerService manufacturerService;
+    private final ManufacturerService manufacturerService;
 
     private  List<Manufacturer> listManufacturer;
     @Autowired
@@ -69,7 +70,7 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editProduct(@PathVariable(value = "id") Long id, Model model) {
+    public String editProduct(@PathVariable(value = "id") UUID id, Model model) {
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("allManufacturer", listManufacturer);
         return "edit_product";
@@ -101,7 +102,7 @@ public class ProductController {
 
     @GetMapping("/remove/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String removeProduct(@PathVariable(value = "id") Long id) {
+    public String removeProduct(@PathVariable(value = "id") UUID id) {
         productService.deleteProduct(id);
         return "redirect:/products";
     }

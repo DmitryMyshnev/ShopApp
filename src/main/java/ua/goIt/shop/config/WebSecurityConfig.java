@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/","/registry","/process_register").permitAll()
+                .antMatchers("/","/registry","/process_register","/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .rememberMe().userDetailsService(this.userDetailsService())
